@@ -3,6 +3,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const path = require("path");
 
+const DIST_PATH = path.resolve(__dirname, "dist");
+
 /**
  * @type {import("webpack").Configuration}
  */
@@ -10,7 +12,7 @@ const config = {
   mode: "production",
   devServer: {
     static: {
-      directory: path.join(__dirname, "dist"),
+      directory: DIST_PATH,
     },
     port: 3000,
   },
@@ -19,7 +21,7 @@ const config = {
     vendor: path.resolve(__dirname, "src", "vendors", "react-with-dom.js"),
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: DIST_PATH,
     filename: "[name].[contenthash].js",
     assetModuleFilename: "assets/[name][ext][query]",
     clean: true,
