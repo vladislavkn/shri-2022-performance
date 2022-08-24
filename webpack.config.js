@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const path = require("path");
 
-const DIST_PATH = path.resolve(__dirname, "dist");
+const DIST_PATH = path.resolve(__dirname, "docs");
 
 /**
  * @type {import("webpack").Configuration}
