@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const path = require("path");
 
 const DIST_PATH = path.resolve(__dirname, "docs");
@@ -17,8 +18,8 @@ const config = {
     port: 3000,
   },
   entry: {
-    script: path.resolve(__dirname, "src", "scripts.js"),
     vendor: path.resolve(__dirname, "src", "vendors", "react-with-dom.js"),
+    script: path.resolve(__dirname, "src", "scripts.js"),
   },
   output: {
     path: DIST_PATH,
@@ -41,7 +42,17 @@ const config = {
     new MiniCssExtractPlugin(),
   ],
   optimization: {
-    minimizer: [new CssMinimizerPlugin()],
+    chunkIds: "named",
+    minimize: true,
+    minimizer: [
+      new CssMinimizerPlugin(),
+      new TerserPlugin({
+        parallel: true,
+        // terserOptions: {
+        //   https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+        // },
+      }),
+    ],
   },
   externals: {
     react: "React",
