@@ -5,6 +5,7 @@
   "main": "scripts.js",
   "scripts": {
     "build": "webpack",
+    "prebuild:images": "node ./scripts/build-images.js",
     "serve": "webpack serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,9 +21,14 @@
   },
   "homepage": "https://github.com/vladislavkn/shri-2022-performance#readme",
   "devDependencies": {
+    "critical": "^4.0.1",
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^4.0.0",
+    "html-critical-webpack-plugin": "^2.1.0",
     "html-webpack-plugin": "^5.5.0",
+    "image-minimizer-webpack-plugin": "^3.3.0",
+    "imagemin": "^8.0.1",
+    "imagemin-webp": "^7.0.0",
     "mini-css-extract-plugin": "^2.6.1",
     "terser-webpack-plugin": "^5.3.5",
     "webpack": "^5.74.0",
