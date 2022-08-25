@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const HtmlCriticalPlugin = require("html-critical-webpack-plugin");
 const path = require("path");
 
 const DIST_PATH = path.resolve(__dirname, "docs");
@@ -11,6 +12,7 @@ const DIST_PATH = path.resolve(__dirname, "docs");
  */
 const config = {
   mode: "production",
+  devtool: "source-map",
   devServer: {
     static: {
       directory: DIST_PATH,
@@ -18,7 +20,6 @@ const config = {
     port: 3000,
   },
   entry: {
-    vendor: path.resolve(__dirname, "src", "vendors", "react-with-dom.js"),
     script: path.resolve(__dirname, "src", "scripts.js"),
   },
   output: {
@@ -33,6 +34,14 @@ const config = {
         test: /.css$/,
         use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        type: "asset",
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: "asset/resource",
+      },
     ],
   },
   plugins: [
@@ -40,22 +49,24 @@ const config = {
       template: path.resolve(__dirname, "src", "index.html"),
     }),
     new MiniCssExtractPlugin(),
+    new HtmlCriticalPlugin({
+      base: DIST_PATH,
+      src: "index.html",
+      dest: "index.html",
+      inline: true,
+      minify: true,
+      extract: true,
+      width: 1200,
+      height: 800,
+      penthouse: {
+        blockJSRequests: false,
+      },
+    }),
   ],
   optimization: {
     chunkIds: "named",
     minimize: true,
-    minimizer: [
-      new CssMinimizerPlugin(),
-      new TerserPlugin({
-        parallel: true,
-        // terserOptions: {
-        //   https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
-        // },
-      }),
-    ],
-  },
-  externals: {
-    react: "React",
+    minimizer: [new CssMinimizerPlugin(), new TerserPlugin({ parallel: true })],
   },
 };
 
